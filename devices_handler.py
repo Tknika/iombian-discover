@@ -7,22 +7,25 @@ import time
 logger = logging.getLogger(__name__)
 
 class Device(object):
-    def __init__(self, id="", hostname="", ip="", port="", properties="", state="", last_message=""):
+    def __init__(self, id="", hostname="", ip="", port="", properties="", available="", last_message=""):
         self.id = id
         self.hostname = hostname
         self.ip = ip if not isinstance(ip, list) else ip[0]
         self.port = port
         self.properties = properties
-        self.state = state
+        self.available = available
         self.last_message = last_message or time.time()
 
-    def update_device(self, hostname="", ip="", port="", properties="", state="", last_message=""):
-        self.hostname = hostname if hostname else self.hostname
-        if ip: self.ip = ip if not isinstance(ip, list) else ip[0]
-        self.port = port if port else self.port
-        self.properties = properties if properties else self.properties
-        self.state = state if state else self.state
-        self.last_message = last_message if last_message else time.time()
+    def update_device(self, hostname=None, ip=None, port=None, properties=None, available=None, last_message=None):
+        self.hostname = hostname if hostname is not None else self.hostname
+        if ip is not None: self.ip = ip if not isinstance(ip, list) else ip[0]
+        self.port = port if port is not None else self.port
+        self.properties = properties if properties is not None else self.properties
+        self.available = available if available is not None else self.available
+        self.last_message = last_message if last_message is not None else time.time()
+
+    def is_available(self):
+        return self.available
 
     def get_services(self):
         services = {}
@@ -35,7 +38,7 @@ class Device(object):
         return services
 
     def to_array(self):
-        return [self.hostname, self.ip, self.state, time.strftime("%Y/%m/%d %H:%M", time.localtime(self.last_message))]
+        return [self.hostname, self.ip, self.available, time.strftime("%Y/%m/%d %H:%M", time.localtime(self.last_message))]
 
     def __str__(self):
         return 'id: {}\n \
@@ -43,7 +46,7 @@ class Device(object):
                 ip: {}\n \
                 port: {}\n \
                 properties: {}\n \
-                state: {}'.format(self.id, self.hostname, self.ip, self.port, self.properties, self.state)
+                available: {}'.format(self.id, self.hostname, self.ip, self.port, self.properties, self.available)
 
 
 class DevicesHandler(object):
@@ -63,14 +66,14 @@ class DevicesHandler(object):
             return
         return list(self.devices.values())[pos]
 
-    def update_device(self, id="", hostname="", ip="", port="", properties="", state="", last_message=""):
+    def update_device(self, id=None, hostname=None, ip=None, port=None, properties=None, available=None, last_message=None):
         if id in self.devices:
             logger.debug("Device '{}' is in devices, should be updated".format(id))
             device = self.devices[id]
-            device.update_device(id, hostname, ip, port, properties, state, last_message)
+            device.update_device(hostname, ip, port, properties, available, last_message)
         else:
             logger.debug("Device '{}' is not in devices, should be created".format(id))
-            self.devices[id] = Device(id, hostname, ip, port, properties, state, last_message)
+            self.devices[id] = Device(id, hostname, ip, port, properties, available, last_message)
         self.last_update = time.time()
 
     def remove_device(self, id):
