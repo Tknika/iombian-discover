@@ -1,2 +1,3 @@
 zeroconf
 pysimplegui
+pyinstaller
