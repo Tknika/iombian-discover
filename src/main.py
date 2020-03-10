@@ -63,6 +63,8 @@ if __name__ == "__main__":
         elif event == 'devices':
             device_position = values.get('devices')[0]
             device = devices_handler.get_device_by_pos(device_position)
+            if not device:
+                continue
             if not device.is_available():
                 logger.debug("Device '{}' is not available, services cannot be shown".format(device.hostname))
                 sg.PopupAutoClose("'{}' not available".format(device.hostname), auto_close_duration=4)
