@@ -18,11 +18,12 @@ def create_services_layout(device):
     frame_layout = [[]]
     for name, url in services.items():
         key = json.dumps({ "url": url })
-        hyperlink_element = sg.Text(name, enable_events=True, key=key)
+        hyperlink_element = sg.Button(name, enable_events=True, key=key)
         frame_layout.append([hyperlink_element])
     
     frame_element = sg.Frame("Services", frame_layout, key='services')
-    return [[frame_element]]
+    layout = [[frame_element]]
+    return layout
 
 if __name__ == "__main__":
     logger.info("Starting 'iombian-discover'...")
@@ -31,7 +32,7 @@ if __name__ == "__main__":
     discovery = DiscoveryHandler(SERVICE_NAME, devices_handler)
     discovery.start()
 
-    sg.theme('Dark')
+    sg.theme('SystemDefault')
 
     headings=["Name", "IP", "Available", "Last Update"]
     data = [["" for i in range(len(headings))]]
