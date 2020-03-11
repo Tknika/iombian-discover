@@ -19,3 +19,9 @@ jobs:
       - name: Build with pyinstaller
         run: |
           pyinstaller --name iombian-discover -w -F src/main.py
+      - name: Publish the artifacts
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: 'dist/iombian-discover*'
