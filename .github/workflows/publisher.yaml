@@ -1,8 +1,8 @@
 name: iombian-discover publisher
 
-on: 
+on:
   release:
-    types: [created]
+    types: [published]
 
 jobs:
   publish:
