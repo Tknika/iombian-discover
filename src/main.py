@@ -3,10 +3,10 @@
 import json
 import logging
 import PySimpleGUI as sg
-import webbrowser
 from devices_handler import DevicesHandler
 from discovery_handler import DiscoveryHandler
 from loading_text_handler import LoadingTextHandler
+from services_handler import launch_service
 
 logging.basicConfig(format='%(asctime)s %(levelname)-8s %(name)-20s  - %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -16,8 +16,8 @@ SERVICE_NAME = "_iombian._tcp.local."
 def create_services_layout(device):
     services = device.get_services()
     frame_layout = [[]]
-    for name, url in services.items():
-        key = json.dumps({ "url": url })
+    for name, info in services.items():
+        key = json.dumps(info)
         hyperlink_element = sg.Button(name, enable_events=True, key=key)
         frame_layout.append([hyperlink_element])
     
@@ -82,11 +82,11 @@ if __name__ == "__main__":
                 services_window_active = False
                 services_window.close()
                 last_update = 0
-            elif "url" in service_event:
-                link = json.loads(service_event)
-                url = link["url"]
-                logger.debug("Openning url: '{}'".format(url))
-                webbrowser.open_new_tab(url)
+            elif "type" in service_event:
+                info = json.loads(service_event)
+                ok = launch_service(info)
+                if not ok:
+                    sg.PopupAutoClose("Service not available", auto_close_duration=4)
                 services_window_active = False
                 services_window.close()
                 last_update = 0

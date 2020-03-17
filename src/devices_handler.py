@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import collections
+import json
 import logging
 import time
 
@@ -29,12 +30,13 @@ class Device(object):
 
     def get_services(self):
         services = {}
-        for name_bytes, port_bytes in self.properties.items():
+        for name_bytes, info_bytes in self.properties.items():
             if name_bytes == b'org.freedesktop.Avahi.cookie':
                 continue
             name = name_bytes.decode("utf-8")
-            port = port_bytes.decode("utf-8")
-            services[name] = "http://{}:{}".format(self.ip, port)
+            info = json.loads(info_bytes.decode("utf-8"))
+            info["ip"] = self.ip
+            services[name] = info
         return services
 
     def to_array(self):
