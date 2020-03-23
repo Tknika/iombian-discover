@@ -45,7 +45,7 @@ def launch_service_smb(info):
             subprocess.Popen(["xdg-open", uri])
             return True
     elif sys.platform == OS.Windows.value:
-        uri = "//{}".format(ip)
+        uri = "\\\\{}".format(ip)
         logger.debug("Openning smb folder: '{}'".format(uri))
         subprocess.Popen('explorer "{0}"'.format(uri))
         return True
