@@ -38,8 +38,12 @@ def launch_service_smb(info):
     uri = "smb://{}".format(ip)
     if sys.platform == OS.Linux.value:
         logger.debug("Openning smb folder: '{}'".format(uri))
-        subprocess.Popen(["xdg-open", uri])
-        return True
+        if __check_command("nautilus"):
+            subprocess.Popen(["nautilus", uri])
+            return True
+        else:
+            subprocess.Popen(["xdg-open", uri])
+            return True
     elif sys.platform == OS.Windows.value:
         uri = "//{}".format(ip)
         logger.debug("Openning smb folder: '{}'".format(uri))
