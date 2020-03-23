@@ -10,7 +10,7 @@ jobs:
     name: IoMBian Discover Release
     strategy:
       matrix:
-        platform: [ubuntu-latest]
+        platform: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout repository
