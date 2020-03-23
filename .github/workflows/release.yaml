@@ -6,8 +6,31 @@ on:
     - 'v*'
 
 jobs:
-  release:
-    name: IoMBian Discover Release
+  create_release:
+    name: IoMBian Discover Create Release
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: IoMBian Discover ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Output Release URL File
+        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+      - name: Save Release URL File for publish
+        uses: actions/upload-artifact@v1
+        with:
+          name: release_url
+          path: release_url.txt
+  build_and_upload:
+    name: IoMBian Discover Build and Upload
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest]
@@ -26,23 +49,22 @@ jobs:
       - name: Build with pyinstaller
         run: |
           pyinstaller --name iombian-discover -w -F src/main.py
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Load Release URL File
+        uses: actions/download-artifact@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: IoMBian Discover ${{ github.ref }}
-          draft: false
-          prerelease: false
+          name: release_url
+      - name: Get Release File Name & Upload URL
+        id: get_release_info
+        run: |
+          value=`cat release_url/release_url.txt`
+          echo ::set-output name=upload_url::$value
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}  
+          upload_url: ${{ steps.get_release_info.outputs.upload_url }}  
           asset_path: ./dist/iombian-discover
           asset_name: iombian-discover-${{ matrix.platform }}
           asset_content_type: application/octet-stream
