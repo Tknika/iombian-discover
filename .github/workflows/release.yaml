@@ -87,7 +87,7 @@ jobs:
           pip install -r requirements.txt
       - name: Build with pyinstaller
         run: |
-          pyinstaller --name iombian-discover -w -F src/main.py
+          pyinstaller --name iombian-discover --icon=resources/search.ico -w -F src/main.py
       - name: Load Release URL File
         uses: actions/download-artifact@v1
         with:
