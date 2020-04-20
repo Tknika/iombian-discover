@@ -6,9 +6,13 @@ This is a companion app for the [IoMBian project](https://github.com/Tknika/iomb
 
 ## Installation
 
-The application does not need to be installed, because it is released as a single executable file for the three main operating systems: Windows, macOS and Linux. New releases are published in the [Release](https://github.com/Tknika/iombian-discover/releases) section of the GitHub repository.
+The application does not need to be installed, because it is released as a single executable file for the three main operating systems: Windows, macOS and Linux.
+New releases are published in the [Release](https://github.com/Tknika/iombian-discover/releases) section of the GitHub repository:
 
-Download the file that corresponds to your OS and launch it (usually a double click in the icon is enough). If the application does not start, ensure that the file has execution permissions.
+![Release](./docs/release-assets.png "Release")
+
+Download the file that corresponds to your OS and launch it (usually a double click in the icon is enough).
+If the application does not start, ensure that the file has execution permissions.
 
 ## Author
 
