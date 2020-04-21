@@ -71,6 +71,10 @@ It describes the services provided by the IoMBian client and for each service a 
 Pressing a button will redirect the user to the chosen application, making it really easy to open the required app.
 Some services (Node-RED, MQTT-client and Monit) are web based, so they will be openned in the default web brower, but others (Samba and SSH) may not be available in all operating systems.
 
+## Demo
+
+[See it in action](https://drive.google.com/file/d/1PcJJXwQq2R9-g5VpMf3x-1BePRU6gRwT/view?usp=sharing)
+
 Enjoy!
 
 ## Author
