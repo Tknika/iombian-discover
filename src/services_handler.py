@@ -63,7 +63,9 @@ def launch_service_ssh(info):
         if __check_command("gnome-terminal"):
             command = "ssh -p {} {}@{}".format(port, user, ip)
             subprocess.Popen(['gnome-terminal', '--', 'bash', '-c', command])
-        # TO-DO: Add more terminal applications (Konsole...)
+        else:
+            # TO-DO: Add more terminal applications (Konsole...)
+            return False
     elif sys.platform == OS.Windows.value:
         # TO-DO: Implement it on Windows (with PuTTy?)
         return False
