@@ -29,7 +29,7 @@ The following image shows how does the app look like when a IoMBian device is fo
 
 ![Main Window Device](./docs/main-window-device.png "Main Window Empty")
 
-As it can be seen, the window is deviced in different sections:
+As it can be seen, the window is divided in different sections:
 
 ### Filter section
 
