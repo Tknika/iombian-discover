@@ -40,22 +40,19 @@ def launch_service_smb(info):
         logger.debug("Openning smb folder: '{}'".format(uri))
         if __check_command("nautilus"):
             subprocess.Popen(["nautilus", uri])
-            return True
         else:
             subprocess.Popen(["xdg-open", uri])
-            return True
     elif sys.platform == OS.Windows.value:
         uri = "\\\\{}".format(ip)
         logger.debug("Openning smb folder: '{}'".format(uri))
         subprocess.Popen('explorer "{0}"'.format(uri))
-        return True
     elif sys.platform == OS.MacOS.value:
         logger.debug("Openning smb folder: '{}'".format(uri))
         subprocess.Popen(["open", uri])
-        return True
     else:
         logger.warn("Unknown system platform: {}".format(sys.platform))
-    return
+        return False
+    return True
 
 def launch_service_ssh(info):
     ip = info["ip"]
@@ -66,17 +63,17 @@ def launch_service_ssh(info):
         if __check_command("gnome-terminal"):
             command = "ssh -p {} {}@{}".format(port, user, ip)
             subprocess.Popen(['gnome-terminal', '--', 'bash', '-c', command])
-            return True
         # TO-DO: Add more terminal applications (Konsole...)
     elif sys.platform == OS.Windows.value:
         # TO-DO: Implement it on Windows (with PuTTy?)
-        pass
+        return False
     elif sys.platform == OS.MacOS.value:
         # TO-DO: Implement it on MacOS
-        pass
+        return False
     else:
         logger.warn("Unknown system platform: {}".format(sys.platform))
-    return
+        return False
+    return True
 
 def __check_command(name):
     return not subprocess.call(["which", name])
