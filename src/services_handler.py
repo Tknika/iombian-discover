@@ -2,6 +2,7 @@
 
 from enum import Enum
 import logging
+import os
 import subprocess
 import sys
 import webbrowser
@@ -67,8 +68,14 @@ def launch_service_ssh(info):
             # TO-DO: Add more terminal applications (Konsole...)
             return False
     elif sys.platform == OS.Windows.value:
-        # TO-DO: Implement it on Windows (with PuTTy?)
-        return False
+        putty_path_64 = r"C:\Program Files\PuTTy\putty.exe"
+        putty_path_32 = r"C:\Program Files (x86)\PuTTy\putty.exe"
+        putty_path = __check_paths([putty_path_64, putty_path_32])
+        if putty_path:
+            subprocess.Popen("{} {}@{} -P {}".format(putty_path, user, ip, port))
+        else:
+            logger.warn("PuTTy is not installed, service not available")
+            return False
     elif sys.platform == OS.MacOS.value:
         # TO-DO: Implement it on MacOS
         return False
@@ -79,3 +86,14 @@ def launch_service_ssh(info):
 
 def __check_command(name):
     return not subprocess.call(["which", name])
+
+def __check_paths(paths):
+    if isinstance(paths, str):
+        return paths if os.path.exists(paths) else None
+    elif isinstance(paths, list):
+        for path in paths:
+            if os.path.exists(path):
+                return path
+        return None
+    else:
+        logger.warn("Paths type '{}' can not be processed".format(type(paths)))
