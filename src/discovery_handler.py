@@ -32,12 +32,16 @@ class DeviceDiscoverListener(object):
         self.devices_handler.update_device(id, available=False)
 
     def add_service(self, zeroconf, type, name):
-        info = zeroconf.get_service_info(type, name)
         logger.info("Service {} added".format(name))
+        info = zeroconf.get_service_info(type, name)
         logger.debug("Service info:\n{}".format(info))
-        id = name
-        hostname = info.server[:-1]
-        ip = info.parsed_addresses()
-        port = info.port
-        properties = info.properties
-        self.devices_handler.update_device(id, hostname, ip, port, properties, True)
+        try:
+            id = name
+            hostname = info.server[:-1]
+            ip = info.parsed_addresses()
+            port = info.port
+            properties = info.properties
+            self.devices_handler.update_device(id, hostname, ip, port, properties, True)
+        except AttributeError:
+            logger.error("Service info for '{}' could not be loaded".format(name))
+            self.devices_handler.update_device(name)
