@@ -62,7 +62,10 @@ if __name__ == "__main__":
             main_window["filter"].set_focus()
             main_window['devices'].update(values=devices_handler.to_array())
         elif event == 'devices':
-            device_position = values.get('devices')[0]
+            devices = values.get('devices')
+            if not devices:
+                continue
+            device_position = devices[0]
             device = devices_handler.get_device_by_pos(device_position)
             if not device:
                 continue
