@@ -33,7 +33,7 @@ jobs:
     name: IoMBian Discover Build and Upload (*nix)
     strategy:
       matrix:
-        platform: [ubuntu-latest, macos-latest]
+        platform: [ubuntu-18.04, ubuntu-20.04, macos-latest]
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout repository
