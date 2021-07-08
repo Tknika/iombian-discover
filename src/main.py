@@ -8,7 +8,7 @@ from discovery_handler import DiscoveryHandler
 from loading_text_handler import LoadingTextHandler
 from services_handler import launch_service
 
-logging.basicConfig(format='%(asctime)s %(levelname)-8s %(name)-20s  - %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(levelname)-8s %(name)-20s  - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 SERVICE_NAME = "_iombian._tcp.local."

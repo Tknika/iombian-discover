@@ -45,3 +45,6 @@ class DeviceDiscoverListener(object):
         except AttributeError:
             logger.error("Service info for '{}' could not be loaded".format(name))
             self.devices_handler.update_device(name)
+
+    def update_service(self, zeroconf, type, name):
+        pass
